@@ -1,7 +1,7 @@
 # Kinecticus
 Lip tracking with OpenCV and a Kinect device
 
-##Dependencies: 
+## Dependencies: 
 - Python2.7
 - OpenCV
 - Cython 
