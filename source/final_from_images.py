@@ -7,12 +7,12 @@ import freenect
 
 #function to get RGB image from kinect
 
-images = 10
+images = 14
 if __name__ == "__main__":
 	
-	for(i=0,i<images,i++):
-		name = 'images/image'+str(i)
-		save_name = 'results/image'+str(i)
+	for i in range(1,images):
+		name = 'images2/image'+str(i)+'.jpg'
+		save_name = 'results2/image'+str(i)+'.jpg'
 		img = cv.imread(name)
 		#img = get_video()
 		img2=img
@@ -25,11 +25,12 @@ if __name__ == "__main__":
 		x=-2
 		for indi,i in enumerate(img2):
 			for indj,j in enumerate(i):
-				x = int(int(j[0])+int(j[2])-2.5*int(j[1]))	#-2.5*int(j[1]))
+				x = int(1.25*int(j[0])+int(j[2])-2.5*int(j[1]))	#-2.5*int(j[1]))
+				# Multipliers: R:1.25, G:-2.5, B:1.0
 				norm[indi][indj] = max(50,x)	
 				#max(50,x)
 
-		ret, norm = cv.threshold(norm,100,255,cv.THRESH_BINARY)
+		ret, norm = cv.threshold(norm,80,255,cv.THRESH_BINARY)
 					
 		for indi,i in enumerate(norm):					#this loop checks if there are any pixels which have x more than 50( i is row)
 			for indj, j in enumerate(i): 				# j is each pixel in row i
@@ -45,7 +46,7 @@ if __name__ == "__main__":
 		count = 0
 		distances = (coord.shape[0],2)
 		distances = np.zeros(distances)
-		limit = min(100,coord.shape[0])	
+		limit = min(200,coord.shape[0])	
 		for i in range(0,limit-2):			#change back to 98
 			count = 0
 			for j in range(1,limit-1):		#change back to 99
@@ -76,17 +77,19 @@ if __name__ == "__main__":
 		#print(avgx)
 		#print(avgy)
 
-		#plt.scatter(distances[:, 1], distances[:, 0])
-		#plt.imshow(img),plt.show()
-		
+			#plt.scatter(distances[:, 1], distances[:, 0])
+			#plt.imshow(img),plt.show()
+			
+			
 			centro=np.ravel(centro)
 			centro = tuple(centro)
-			centro = centro[::-1]		
+			centro = centro[::-1]
+			centro = centro[0:2]	
 			if centro:
 				cv.circle(img,centro,40,(0,0,255),2,8)
-		cv2.imwrite(save_name,img)
+		cv.imwrite(save_name,img)
 		
 		k = cv.waitKey(5) & 0xFF
         	if k == 27:
             		break
-cv2.destroyAllWindows()
+cv.destroyAllWindows()
